@@ -14,7 +14,7 @@
         <div class="card mb-3" style="max-width: 100%;">
           <div class="row g-0">
             <div class="col-md-4">
-              <img v-bind:src="'http://localhost:8080/' + post.image" class="card-img-top" v-bind:alt="post.title">
+              <img v-bind:src="'https://emulator-search-backend.herokuapp.com/' + post.image" class="card-img-top" v-bind:alt="post.title">
             </div>
             <div class="col-md-8">
               <div class="card-body">
@@ -41,7 +41,7 @@ export default {
     async login(){
       try {
         const response = await this.$http.post(
-            "http://localhost:8080/autenticar", { usuario: "asfo", contrasena: "holamundo" }
+            "https://emulator-search-backend.herokuapp.com/autenticar", { usuario: "asfo", contrasena: "holamundo" }
         );
         this.token = response.data.token;
         this.getData(this.token);
@@ -53,7 +53,7 @@ export default {
     async getData(token) {
       try {
         const response = await this.$http.get(
-            "http://localhost:8080/videos", { 'headers': { 'access-token': token } }
+            "https://emulator-search-backend.herokuapp.com/videos", { 'headers': { 'access-token': token } }
         );
         this.posts = response.data;
         console.log("Token", token);
