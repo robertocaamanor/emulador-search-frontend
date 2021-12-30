@@ -6,11 +6,11 @@
         placeholder="Buscar videos"
     /> -->
     <div class="input-group mb-3">
-      <span class="input-group-text" id="basic-addon1">Buscar video</span>
-      <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" v-model="search" placeholder="Buscar videos" />
-    </div><br />
-    <div v-if="filteredList && filteredList.length">
-      <div v-for="post in filteredList" v-bind:key="post.id">
+      <input type="text" class="form-control" placeholder="Ingrese video a buscar" aria-label="Recipient's username" v-model="search" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2" v-on:click="getData(search)">Button</button>
+    </div>
+    <div v-if="posts && posts.length">
+      <div v-for="post in posts" v-bind:key="post.id">
         <div class="card mb-3" style="max-width: 100%;">
           <div class="row g-0">
             <div class="col-md-4">
@@ -35,8 +35,8 @@ export default {
     return {
       posts: [],
       search: "",
-      uri: "https://emulator-search-backend.herokuapp.com"
-      // uri: "http://localhost:8080"
+      // uri: "https://emulator-search-backend.herokuapp.com"
+      uri: "http://localhost:8080"
     };
   },
   methods: {
@@ -46,36 +46,61 @@ export default {
             this.uri + "/autenticar", { usuario: "asfo", contrasena: "holamundo" }
         );
         this.token = response.data.token;
-        this.getData(this.token);
-        console.log('Autenticar', this.token);
+        if(this.search!=''){
+          this.getData(this.search);
+        }else{
+          this.getData('');
+        }
+        // console.log('Autenticar', this.token);
       } catch (error) {
         console.log(error);
       }
     },
-    async getData(token) {
+    async getData(search) {
+      console.log(search);
+      if(search!=''){
+        this.uriSearch = this.uri + "/videos?busqueda="+search;
+      }else{
+        this.uriSearch = this.uri + "/videos";
+      }
       try {
         const response = await this.$http.get(
-            this.uri + "/videos", { 'headers': { 'access-token': token } }
+            this.uriSearch, { 'headers': { 'access-token': this.token } }
         );
         this.videos = response.data;
+        
         this.videos.forEach((item)=> {
           // console.log(item.snippet);
           this.posts.push(item.snippet);
         })
+        console.log("Token", this.posts);
       } catch (error) {
         console.log(error);
-        console.log("Token", token);
+        console.log("Token", this.token);
       }
-    }
+    },
+    // async getDataSearch(search) {
+    //   try {
+    //     const response = await this.$http.get(
+    //         this.uri + "/videos?busqueda="+search, { 'headers': { 'access-token': this.token } }
+    //     );
+    //     this.videos = response.data;
+    //     this.videos.forEach((item)=> {
+    //       // console.log(item.snippet);
+    //       this.posts.push(item.snippet);
+    //     })
+    //   } catch (error) {
+    //     console.log(error);
+    //     console.log("Token", token);
+    //   }
+    // }
     
       
   },
   computed: {
-    filteredList(){
-			return this.posts.filter(posts => {
-				return posts.title.toLowerCase().indexOf(this.search.toLowerCase()) !== -1
-			})
-		}
+    // filteredList(){
+		// 	this.getDataSearch(this.token, this.search);
+		// }
   },
   created() {
     this.login();
