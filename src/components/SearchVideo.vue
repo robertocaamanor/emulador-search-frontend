@@ -14,7 +14,7 @@
         <div class="card mb-3" style="max-width: 100%;">
           <div class="row g-0">
             <div class="col-md-4">
-              <img v-bind:src="'https://emulator-search-backend.herokuapp.com/' + post.image" class="card-img-top" v-bind:alt="post.title">
+              <img v-bind:src="post.thumbnails.default.url" class="card-img-top" v-bind:alt="post.title">
             </div>
             <div class="col-md-8">
               <div class="card-body">
@@ -36,6 +36,7 @@ export default {
       posts: [],
       search: "",
       uri: "https://emulator-search-backend.herokuapp.com"
+      // uri: "http://localhost:8080"
     };
   },
   methods: {
@@ -56,9 +57,11 @@ export default {
         const response = await this.$http.get(
             this.uri + "/videos", { 'headers': { 'access-token': token } }
         );
-        this.posts = response.data;
-        console.log("Token", token);
-        console.log(this.posts);
+        this.videos = response.data;
+        this.videos.forEach((item)=> {
+          // console.log(item.snippet);
+          this.posts.push(item.snippet);
+        })
       } catch (error) {
         console.log(error);
         console.log("Token", token);
