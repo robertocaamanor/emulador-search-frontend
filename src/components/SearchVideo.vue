@@ -35,8 +35,8 @@ export default {
     return {
       posts: [],
       search: "",
-      // uri: "https://emulator-search-backend.herokuapp.com"
-      uri: "http://localhost:8080"
+      uri: "https://emulator-search-backend.herokuapp.com"
+      // uri: "http://localhost:8080"
     };
   },
   methods: {
