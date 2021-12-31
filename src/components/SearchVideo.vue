@@ -7,7 +7,7 @@
     /> -->
     <div class="input-group mb-3">
       <input type="text" class="form-control" placeholder="Ingrese video a buscar" aria-label="Recipient's username" v-model="search" aria-describedby="button-addon2">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2" v-on:click="getData(search)">Button</button>
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2" v-on:click="getData(search)">Buscar</button>
     </div>
     <div v-if="posts && posts.length">
       <div v-for="post in posts" v-bind:key="post.id">
@@ -35,8 +35,8 @@ export default {
     return {
       posts: [],
       search: "",
-      uri: "https://emulator-search-backend.herokuapp.com"
-      // uri: "http://localhost:8080"
+      // uri: "https://emulator-search-backend.herokuapp.com"
+      uri: "http://localhost:8080"
     };
   },
   methods: {
@@ -63,6 +63,7 @@ export default {
       }else{
         this.uriSearch = this.uri + "/videos";
       }
+      this.posts = [];
       try {
         const response = await this.$http.get(
             this.uriSearch, { 'headers': { 'access-token': this.token } }
