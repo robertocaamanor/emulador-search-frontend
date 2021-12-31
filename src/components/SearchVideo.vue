@@ -46,11 +46,12 @@ export default {
             this.uri + "/autenticar", { usuario: "asfo", contrasena: "holamundo" }
         );
         this.token = response.data.token;
-        if(this.search!=''){
-          this.getData(this.search);
-        }else{
-          this.getData('');
-        }
+        // if(this.search!=''){
+        //   this.getData(this.search);
+        // }else{
+        //   this.getData('');
+        // }
+        this.getData('');
         // console.log('Autenticar', this.token);
       } catch (error) {
         console.log(error);
@@ -58,7 +59,7 @@ export default {
     },
     async getData(search) {
       console.log(search);
-      if(search!=''){
+      if(search!='' || search!=undefined){
         this.uriSearch = this.uri + "/videos?busqueda="+search;
       }else{
         this.uriSearch = this.uri + "/videos";
